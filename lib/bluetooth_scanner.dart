@@ -13,12 +13,10 @@ class BluetoothScanner {
     service.scanResults.listen((results) {
       // do something with scan results
       for (ScanResult r in results) {
-        debugPrint('${r.device.name} found! rssi: ${r.rssi}');
+        debugPrint(
+            '${r.device.name} found! di: ${r.device.id} rssi: ${r.rssi}');
       }
     });
-
-    // Stop scanning
-    service.stopScan();
   }
 
   // Stop scanning for BLE devices
