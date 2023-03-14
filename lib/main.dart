@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shca_test/scanner_widget.dart';
 import 'package:shca_test/screens/username_screen.dart';
-import 'package:shca_test/screens/summary_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: SummaryScreen(),
+      home: UsernameScreen(),
     );
   }
 }

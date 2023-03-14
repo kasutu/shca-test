@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shca_test/screens/map_screen.dart';
+import 'package:shca_test/screens/family_share_screen.dart';
 
 class UserTypeSelectionScreen extends StatelessWidget {
   @override
@@ -7,12 +8,12 @@ class UserTypeSelectionScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text('Select User Type'),
+        title: const Text('Select User Type'),
       ),
       body: Center(
         child: Column(
@@ -25,11 +26,14 @@ class UserTypeSelectionScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => MapScreen()));
               },
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               child: Text('Family'),
               onPressed: () {
-                // TODO: Navigate to family page
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FamilyOptionScreen()));
               },
             ),
           ],

@@ -22,13 +22,13 @@ class UsernameScreen extends StatelessWidget {
                     child: TextField(
                       controller: _usernameController,
                       decoration: const InputDecoration(
-                        hintText: 'Enter username',
+                        hintText: 'username',
                       ),
                     ),
                   )),
             ),
             ElevatedButton(
-              child: Text('Connect'),
+              child: const Text('Connect'),
               onPressed: () {
                 Navigator.push(
                     context,

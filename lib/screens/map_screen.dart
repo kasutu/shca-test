@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shca_test/screens/summary_screen.dart';
+import 'package:shca_test/screens/emergency_contacts_screen.dart';
+import 'package:shca_test/screens/family_share_screen.dart';
+import 'package:shca_test/screens/map_search_screen.dart';
 
 class MapScreen extends StatelessWidget {
+  const MapScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -16,28 +21,48 @@ class MapScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              child: Text('Emergency Contacts'),
+              // width is less
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(100, 30),
+              ),
+              child: const Text('Emergency Contacts',
+                  style: TextStyle(fontSize: 14.0)),
               onPressed: () {
-                // TODO: Navigate to emergency contacts page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EmergencyContactsScreen(),
+                  ),
+                );
               },
             ),
-            SizedBox(width: 16.0),
+            const SizedBox(width: 16.0),
             ElevatedButton(
-              child: Text('Share Live Location'),
+              // width is less
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(100, 30),
+              ),
+              child: const Text('Share Live Location',
+                  style: TextStyle(fontSize: 14.0)),
               onPressed: () {
-                // TODO: Implement share live location
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FamilyOptionScreen(),
+                  ),
+                );
               },
             ),
           ],
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.list),
+            icon: const Icon(Icons.list),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SummaryScreen(),
+                  builder: (context) => const SummaryScreen(),
                 ),
               );
             },
@@ -49,9 +74,17 @@ class MapScreen extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: TextField(
-                decoration: InputDecoration(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MapSearchScreen(),
+                    ),
+                  );
+                },
+                decoration: const InputDecoration(
                   hintText: 'Search',
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(),
@@ -62,11 +95,11 @@ class MapScreen extends StatelessWidget {
               color: Colors.grey[300],
               width: double.infinity,
               height: MediaQuery.of(context).size.width > 600 ? 400 : 200,
-              child: Center(
+              child: const Center(
                 child: Text('Map View'),
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -75,7 +108,7 @@ class MapScreen extends StatelessWidget {
                 _buildDetailBox(context, 'Rotation', '50°'),
               ],
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -84,7 +117,7 @@ class MapScreen extends StatelessWidget {
                 _buildDetailBox(context, 'IoT', 'Connected'),
               ],
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
           ],
         ),
       ),
@@ -95,7 +128,7 @@ class MapScreen extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width / 3.5,
       height: MediaQuery.of(context).size.width / 3.5 * 1.5,
-      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8.0),
@@ -113,13 +146,13 @@ class MapScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
             value,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24.0,
               fontWeight: FontWeight.bold,
             ),
