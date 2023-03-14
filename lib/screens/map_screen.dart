@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shca_test/screens/summary_screen.dart';
 
 class MapScreen extends StatelessWidget {
   @override
@@ -33,7 +34,12 @@ class MapScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.list),
             onPressed: () {
-              // TODO: Navigate to summary page
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SummaryScreen(),
+                ),
+              );
             },
           ),
         ],
