@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:shca_test/components/google_maps.dart';
 
 class MapSearchScreen extends StatelessWidget {
+  const MapSearchScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text('Map Search'),
+        title: const Text('Map Search'),
       ),
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide.none,
@@ -31,9 +34,7 @@ class MapSearchScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Center(
-              child: Text('results here'),
-            ),
+            child: MapSample(),
           ),
         ],
       ),
