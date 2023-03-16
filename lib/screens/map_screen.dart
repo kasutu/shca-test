@@ -1,11 +1,78 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:shca_test/screens/summary_screen.dart';
 import 'package:shca_test/screens/emergency_contacts_screen.dart';
 import 'package:shca_test/screens/family_share_screen.dart';
 import 'package:shca_test/screens/map_search_screen.dart';
+import 'package:shca_test/screens/summary_screen.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
-class MapScreen extends StatelessWidget {
-  const MapScreen({super.key});
+class MapScreen extends StatefulWidget {
+  const MapScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MapScreen> createState() => _MapScreenState();
+}
+
+class _MapScreenState extends State<MapScreen> {
+  double _magnitude = 0.0;
+  double _speed = 0.0;
+  double _lastX = 0.0;
+  double _lastY = 0.0;
+  double _lastZ = 0.0;
+  double _currentTime = 0.0;
+  double _lastTime = 0.0;
+  StreamSubscription<GyroscopeEvent>? _subscriptionGyro;
+  StreamSubscription<UserAccelerometerEvent>? _subscriptionAcc;
+
+  @override
+  void initState() {
+    super.initState();
+    _subscriptionGyro = Stream.periodic(const Duration(seconds: 1))
+        .asyncMap((_) => gyroscopeEvents.first)
+        .listen((event) {
+      setState(() {
+        _magnitude = -event.z * 180 / pi;
+      });
+    });
+    _subscriptionAcc = Stream.periodic(const Duration(seconds: 1))
+        .asyncMap((_) => userAccelerometerEvents.first)
+        .listen((event) {
+      double x = event.x;
+      double y = event.y;
+      double z = event.z;
+
+      // Calculate acceleration in three dimensions
+      double acceleration = (pow(x, 2) +
+              pow(y, 2) +
+              pow(z, 2) -
+              pow(_lastX, 2) -
+              pow(_lastY, 2) -
+              pow(_lastZ, 2))
+          .toDouble();
+
+      acceleration = acceleration.abs();
+
+      // get speed
+      _currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
+      double dt = _currentTime - _lastTime;
+      _speed = acceleration * dt * 1000;
+
+      setState(() {
+        _lastX = x;
+        _lastY = y;
+        _lastZ = z;
+        _lastTime = _currentTime;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscriptionGyro?.cancel();
+    _subscriptionAcc?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,8 +171,10 @@ class MapScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildDetailBox(context, 'Alcohol Level', '0.05'),
-                _buildDetailBox(context, 'Speed', '45 km/h'),
-                _buildDetailBox(context, 'Rotation', '50°'),
+                _buildDetailBox(
+                    context, 'Speed', '${_speed.toStringAsFixed(2)} km/h'),
+                _buildDetailBox(context, 'Rotation',
+                    '${_magnitude.toStringAsFixed(2)} °/s'),
               ],
             ),
             const SizedBox(height: 16.0),
@@ -137,7 +206,7 @@ class MapScreen extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
