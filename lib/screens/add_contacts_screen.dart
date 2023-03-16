@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'package:shca_test/models/contacts_model.dart';
 
 class AddEmergencyContactScreen extends StatelessWidget {
-  const AddEmergencyContactScreen({super.key});
+  const AddEmergencyContactScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
+    late String name;
+    late String phoneNumber;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -16,7 +23,7 @@ class AddEmergencyContactScreen extends StatelessWidget {
         title: const Text('Add Emergency Contact'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -28,8 +35,11 @@ class AddEmergencyContactScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8.0),
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              onChanged: (value) {
+                name = value;
+              },
+              decoration: const InputDecoration(
                 hintText: 'Enter name',
                 border: OutlineInputBorder(),
               ),
@@ -43,9 +53,12 @@ class AddEmergencyContactScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8.0),
-            const TextField(
+            TextField(
+              onChanged: (value) {
+                phoneNumber = value;
+              },
               keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter phone number',
                 border: OutlineInputBorder(),
               ),
@@ -55,7 +68,12 @@ class AddEmergencyContactScreen extends StatelessWidget {
               width: double.infinity,
               height: 50.0,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final contactBox = await Hive.openBox<Contact>('contacts');
+                  final newContact = Contact(name, phoneNumber);
+                  await contactBox.add(newContact);
+                  Navigator.pop(context);
+                },
                 child: const Text('Add'),
               ),
             ),
