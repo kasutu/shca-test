@@ -5,6 +5,7 @@ import 'package:shca_test/screens/emergency_contacts_screen.dart';
 import 'package:shca_test/screens/family_share_screen.dart';
 import 'package:shca_test/screens/map_search_screen.dart';
 import 'package:shca_test/screens/summary_screen.dart';
+import 'package:shca_test/components/google_maps.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class MapScreen extends StatefulWidget {
@@ -35,7 +36,7 @@ class _MapScreenState extends State<MapScreen> {
         _magnitude = -event.z * 180 / pi;
       });
     });
-    _subscriptionAcc = Stream.periodic(const Duration(seconds: 1))
+    _subscriptionAcc = Stream.periodic(const Duration(milliseconds: 500))
         .asyncMap((_) => userAccelerometerEvents.first)
         .listen((event) {
       double x = event.x;
@@ -162,9 +163,7 @@ class _MapScreenState extends State<MapScreen> {
               color: Colors.grey[300],
               width: double.infinity,
               height: MediaQuery.of(context).size.width > 600 ? 400 : 200,
-              child: const Center(
-                child: Text('Map View'),
-              ),
+              child: const Center(child: MapSample()),
             ),
             const SizedBox(height: 16.0),
             Row(
@@ -172,7 +171,7 @@ class _MapScreenState extends State<MapScreen> {
               children: [
                 _buildDetailBox(context, 'Alcohol Level', '0.05'),
                 _buildDetailBox(
-                    context, 'Speed', '${_speed.toStringAsFixed(2)} km/h'),
+                    context, 'Speed', '${_speed.toStringAsFixed(2)} m/s'),
                 _buildDetailBox(context, 'Rotation',
                     '${_magnitude.toStringAsFixed(2)} °/s'),
               ],
